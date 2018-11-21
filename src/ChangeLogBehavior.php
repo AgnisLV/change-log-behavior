@@ -127,11 +127,12 @@ class ChangeLogBehavior extends Behavior
         return $diff;
     }
 
-    public function addDeleteLog()
+    public function addDeleteLog(Event $event)
     {
         $logEvent = new LogItem();
         $logEvent->relatedObject = $this->owner;
         $logEvent->data = '';
+        if($event->sender) $logEvent->data = $event->sender->getAttributes();
         $logEvent->type = self::DELETED;
         $logEvent->save();
     }
